@@ -1,6 +1,4 @@
-/**
- * Gerenciador de Dados - Gerencia carregamento, processamento e controles temporais de dados
- */
+
 class DataManager {
     constructor() {
         this.currentDate = new Date();
@@ -18,13 +16,13 @@ class DataManager {
 
     init() {
         this.setupDateControls();
-        // this.generateSampleDataset(); // Comentado - não gerar dados falsos
+        
         this.updateDateDisplay();
-        this.clearMetrics(); // Limpar métricas
+        this.clearMetrics(); 
     }
 
     clearMetrics() {
-        // Limpar métricas na interface
+        
         document.getElementById('primaryValue').textContent = '--';
         document.getElementById('intensityLevel').textContent = '--%';
         document.getElementById('statusText').textContent = 'Aguardando dados da NASA';
@@ -37,27 +35,33 @@ class DataManager {
         const nextBtn = document.getElementById('nextDate');
         const playBtn = document.getElementById('playBtn');
 
-        // Set initial date
-        dateInput.value = this.formatDateForInput(this.currentDate);
-        dateInput.min = this.formatDateForInput(this.dateRange.start);
-        dateInput.max = this.formatDateForInput(this.dateRange.end);
+        if (dateInput) {
+            dateInput.value = this.formatDateForInput(this.currentDate);
+            dateInput.min = this.formatDateForInput(this.dateRange.start);
+            dateInput.max = this.formatDateForInput(this.dateRange.end);
 
-        // Event listeners
-        dateInput.addEventListener('change', (e) => {
-            this.setDate(new Date(e.target.value));
-        });
+            dateInput.addEventListener('change', (e) => {
+                this.setDate(new Date(e.target.value));
+            });
+        }
 
-        prevBtn.addEventListener('click', () => {
-            this.navigateDate(-1);
-        });
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                this.navigateDate(-1);
+            });
+        }
 
-        nextBtn.addEventListener('click', () => {
-            this.navigateDate(1);
-        });
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                this.navigateDate(1);
+            });
+        }
 
-        playBtn.addEventListener('click', () => {
-            this.togglePlayback();
-        });
+        if (playBtn) {
+            playBtn.addEventListener('click', () => {
+                this.togglePlayback();
+            });
+        }
     }
 
     formatDateForInput(date) {
@@ -84,8 +88,7 @@ class DataManager {
     updateDateDisplay() {
         const dateInput = document.getElementById('dateInput');
         dateInput.value = this.formatDateForInput(this.currentDate);
-        
-        // Update status
+
         document.getElementById('dataStatus').textContent = 
             `Dados de ${this.currentDate.toLocaleDateString('pt-BR')}`;
     }
@@ -111,12 +114,12 @@ class DataManager {
             nextDate.setDate(nextDate.getDate() + 1);
             
             if (!this.setDate(nextDate)) {
-                // Reached end of date range, stop playback
+                
                 this.stopPlayback();
                 document.getElementById('playBtn').textContent = '▶ Reproduzir';
                 document.getElementById('playBtn').classList.remove('playing');
             }
-        }, 1000); // Change date every second during playback
+        }, 1000); 
     }
 
     stopPlayback() {
@@ -129,19 +132,16 @@ class DataManager {
 
     loadDataForDate(date) {
         const dateKey = this.formatDateForInput(date);
-        
-        // Check cache first
+
         if (this.dataCache.has(dateKey)) {
             this.currentDataset = this.dataCache.get(dateKey);
             this.notifyDataLoaded();
             return;
         }
 
-        // Show loading
         document.getElementById('loadingOverlay').classList.add('show');
         document.getElementById('statusText').textContent = 'Carregando dados...';
 
-        // Simulate data loading
         setTimeout(() => {
             const dataset = this.generateDataForDate(date);
             this.dataCache.set(dateKey, dataset);
@@ -151,7 +151,7 @@ class DataManager {
             document.getElementById('statusText').textContent = 'Dados carregados';
             
             this.notifyDataLoaded();
-        }, 500 + Math.random() * 1000); // Random loading time
+        }, 500 + Math.random() * 1000); 
     }
 
     generateDataForDate(date) {
@@ -172,7 +172,6 @@ class DataManager {
             }
         };
 
-        // Generate realistic data based on date - focus on Brazil
         const dayOfYear = this.getDayOfYear(date);
         const seasonalFactor = Math.sin((dayOfYear / 365) * 2 * Math.PI);
         const baseCount = 50 + Math.round(seasonalFactor * 30);
@@ -182,14 +181,13 @@ class DataManager {
             dataset.points.push(point);
         }
 
-        // Calculate statistics
         this.calculateStatistics(dataset);
 
         return dataset;
     }
 
     generateDataPoint(date, seasonalFactor) {
-        // Generate coordinates within Brazil territory
+        
         const brazilBounds = {
             north: 5.27438888,
             south: -33.75116944,
@@ -200,7 +198,6 @@ class DataManager {
         const baseLat = brazilBounds.south + Math.random() * (brazilBounds.north - brazilBounds.south);
         const baseLng = brazilBounds.west + Math.random() * (brazilBounds.east - brazilBounds.west);
 
-        // Apply seasonal variations
         const riskValue = Math.max(0, Math.min(100, 
             50 + seasonalFactor * 30 + (Math.random() - 0.5) * 40
         ));
@@ -248,7 +245,6 @@ class DataManager {
             maxRisk = Math.max(maxRisk, risk);
             minRisk = Math.min(minRisk, risk);
 
-            // Count hotspots (high risk + high probability)
             if (risk > 70 && probability > 70) {
                 hotspotCount++;
             }
@@ -274,15 +270,13 @@ class DataManager {
     }
 
     notifyDataLoaded() {
-        // Notify other components that new data is available
+        
         if (window.mapController) {
             window.mapController.updateVisualization();
         }
 
-        // Update UI with current dataset statistics
         this.updateStatisticsDisplay();
 
-        // Dispatch custom event
         window.dispatchEvent(new CustomEvent('dataUpdated', {
             detail: {
                 dataset: this.currentDataset,
@@ -295,12 +289,10 @@ class DataManager {
         if (!this.currentDataset) return;
 
         const stats = this.currentDataset.statistics;
-        
-        // Update metrics in the UI
+
         document.getElementById('supportScore').textContent = `${stats.avgProbability}/100`;
         document.getElementById('riskFactor').textContent = `${stats.avgRisk}%`;
-        
-        // Update status with data info
+
         document.getElementById('dataStatus').textContent = 
             `${this.currentDataset.metadata.totalPoints} pontos, ${stats.hotspotCount} focos identificados`;
     }
@@ -322,7 +314,7 @@ class DataManager {
     }
 
     calculateDistance(lat1, lng1, lat2, lng2) {
-        const R = 6371; // Earth's radius in km
+        const R = 6371; 
         const dLat = this.deg2rad(lat2 - lat1);
         const dLng = this.deg2rad(lng2 - lng1);
         const a = 
@@ -338,8 +330,7 @@ class DataManager {
     }
 
     generateSampleDataset() {
-        // Não gerar dados de exemplo - aguardar dados reais da NASA
-        // this.loadDataForDate(this.currentDate); // Comentado
+
         console.log('Aguardando dados oficiais da NASA...');
     }
 

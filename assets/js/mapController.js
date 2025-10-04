@@ -18,6 +18,24 @@ class MapController {
     }
 
     initMap() {
+        // Verificar se o mapa já foi inicializado
+        if (this.map) {
+            console.log('Mapa já inicializado, pulando...');
+            return;
+        }
+
+        // Verificar se o container existe e está livre
+        const mapContainer = document.getElementById('map');
+        if (!mapContainer) {
+            console.error('Container do mapa não encontrado');
+            return;
+        }
+
+        // Limpar qualquer instância anterior do Leaflet
+        if (mapContainer._leaflet_id) {
+            mapContainer._leaflet_id = null;
+        }
+
         // Inicializar o mapa centralizado no Brasil
         this.map = L.map('map', {
             center: [-15.7942, -47.8822], // Centro do Brasil (Brasília)
@@ -26,17 +44,24 @@ class MapController {
             attributionControl: true,
             minZoom: 2,
             maxZoom: 18,
+            // Habilitar controles de navegação
+            dragging: true,
+            touchZoom: true,
+            doubleClickZoom: true,
+            scrollWheelZoom: true,
+            boxZoom: true,
+            keyboard: true,
             // Configurar para mapa-múndi único (sem repetição)
             worldCopyJump: false,
             continuousWorld: false,
             noWrap: true,
             zoomSnap: 0.25,
-            // Limitar aos bounds do mundo real
+            // Limitar aos bounds do mundo real com mais flexibilidade
             maxBounds: [
-                [-90, -180], // Canto sudoeste do mundo
-                [90, 180]    // Canto nordeste do mundo
+                [-85, -180], // Canto sudoeste do mundo
+                [85, 180]    // Canto nordeste do mundo  
             ],
-            maxBoundsViscosity: 1.0
+            maxBoundsViscosity: 0.7
         });
 
         // Adicionar camada de azulejos clara
@@ -84,9 +109,11 @@ class MapController {
             }
         });
 
-        // Handle map clicks
+        // Handle map clicks (only if not dragging)
         this.map.on('click', (e) => {
-            this.handleMapClick(e);
+            if (!e.originalEvent._dragging) {
+                this.handleMapClick(e);
+            }
         });
 
         // Handle zoom changes
@@ -97,6 +124,18 @@ class MapController {
         // Melhorar responsividade do mapa
         this.map.on('movestart', () => {
             this.map.getContainer().style.cursor = 'grabbing';
+        });
+        
+        this.map.on('moveend', () => {
+            this.map.getContainer().style.cursor = 'grab';
+        });
+        
+        this.map.on('dragstart', () => {
+            this.map.getContainer().style.cursor = 'grabbing';
+        });
+        
+        this.map.on('dragend', () => {
+            this.map.getContainer().style.cursor = 'grab';
         });
 
         this.map.on('moveend', () => {
@@ -111,18 +150,26 @@ class MapController {
     }
 
     setupEventListeners() {
-        // Layer toggle listeners
-        document.getElementById('dataLayer').addEventListener('change', (e) => {
-            this.toggleDataLayer(e.target.checked);
-        });
+        const dataLayer = document.getElementById('dataLayer');
+        if (dataLayer) {
+            dataLayer.addEventListener('change', (e) => {
+                this.toggleDataLayer(e.target.checked);
+            });
+        }
 
-        document.getElementById('heatmapLayer').addEventListener('change', (e) => {
-            this.toggleHeatmapLayer(e.target.checked);
-        });
+        const heatmapLayer = document.getElementById('heatmapLayer');
+        if (heatmapLayer) {
+            heatmapLayer.addEventListener('change', (e) => {
+                this.toggleHeatmapLayer(e.target.checked);
+            });
+        }
 
-        document.getElementById('markerLayer').addEventListener('change', (e) => {
-            this.toggleMarkerLayer(e.target.checked);
-        });
+        const markerLayer = document.getElementById('markerLayer');
+        if (markerLayer) {
+            markerLayer.addEventListener('change', (e) => {
+                this.toggleMarkerLayer(e.target.checked);
+            });
+        }
     }
 
     handleMapClick(e) {

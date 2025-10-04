@@ -1,6 +1,4 @@
-/**
- * Controlador de Interface - Gerencia interações e atualizações da interface do usuário
- */
+
 class UIController {
     constructor() {
         this.isMobile = window.innerWidth <= 768;
@@ -24,36 +22,34 @@ class UIController {
         
         modeButtons.forEach(button => {
             button.addEventListener('click', (e) => {
-                // Remove active class from all buttons
+                
                 modeButtons.forEach(btn => btn.classList.remove('active'));
-                
-                // Add active class to clicked button
+
                 e.target.classList.add('active');
-                
-                // Get the mode from data attribute
+
                 const mode = e.target.getAttribute('data-mode');
-                
-                // Notify mapController of mode change
+
                 if (window.mapController) {
                     window.mapController.setViewMode(mode);
                 }
-                
-                // Update UI elements based on mode
+
                 this.updateModeSpecificUI(mode);
             });
         });
     }
 
     updateModeSpecificUI(mode) {
-        // Update labels and descriptions based on mode
+        
         const modeDescriptions = {
             risk: 'Exibindo dados de avaliação de risco',
             temperature: 'Exibindo análise de temperatura'
         };
 
-        document.getElementById('statusText').textContent = modeDescriptions[mode] || 'Modo desconhecido';
+        const statusText = document.getElementById('statusText');
+        if (statusText) {
+            statusText.textContent = modeDescriptions[mode] || 'Modo desconhecido';
+        }
 
-        // Update metric labels if needed
         const primaryLabel = document.querySelector('.metric label');
         const intensityLabel = document.querySelectorAll('.metric label')[1];
         
@@ -67,20 +63,26 @@ class UIController {
     }
 
     setupToolButtons() {
-        // Export button
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            this.showExportOptions();
-        });
+        const exportBtn = document.getElementById('exportBtn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => {
+                this.showExportOptions();
+            });
+        }
 
-        // Analyze button
-        document.getElementById('analyzeBtn').addEventListener('click', () => {
-            this.runAnalysis();
-        });
+        const helpBtn = document.getElementById('helpBtn');
+        if (helpBtn) {
+            helpBtn.addEventListener('click', () => {
+                this.showInfoModal();
+            });
+        }
 
-        // Info button
-        document.getElementById('infoBtn').addEventListener('click', () => {
-            this.showInfoModal();
-        });
+        const mobileMenuBtn = document.getElementById('mobileMenuToggle');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                this.toggleMobileMenu();
+            });
+        }
     }
 
     showExportOptions() {
@@ -106,15 +108,24 @@ class UIController {
     }
 
     runAnalysis() {
-        document.getElementById('loadingOverlay').classList.add('show');
-        document.getElementById('statusText').textContent = 'Executando análise...';
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const statusText = document.getElementById('statusText');
+        
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('show');
+        }
+        if (statusText) {
+            statusText.textContent = 'Executando análise...';
+        }
 
-        // Simulate analysis process
         setTimeout(() => {
-            document.getElementById('loadingOverlay').classList.remove('show');
-            document.getElementById('statusText').textContent = 'Análise concluída';
-            
-            // Show analysis results
+            if (loadingOverlay) {
+                loadingOverlay.classList.remove('show');
+            }
+            if (statusText) {
+                statusText.textContent = 'Análise concluída';
+            }
+
             this.showAnalysisResults();
         }, 2000 + Math.random() * 2000);
     }
@@ -217,8 +228,7 @@ class UIController {
         closeBtn.addEventListener('click', () => {
             this.closeDataPanel();
         });
-        
-        // Close on escape key
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.closeDataPanel();
@@ -236,8 +246,7 @@ class UIController {
         window.addEventListener('resize', () => {
             this.handleResize();
         });
-        
-        // Add mobile menu button if needed
+
         if (this.isMobile) {
             this.addMobileMenuButton();
         }
@@ -250,12 +259,11 @@ class UIController {
         if (wasMobile !== this.isMobile) {
             this.checkMobileView();
         }
-        
-        // Trigger map resize if needed - mais robusto
+
         if (window.mapController && window.mapController.map) {
             setTimeout(() => {
                 window.mapController.map.invalidateSize();
-                // Forçar recentralização se necessário
+                
                 window.mapController.map.setView([-15.7942, -47.8822], window.mapController.map.getZoom());
             }, 200);
         }
@@ -310,44 +318,44 @@ class UIController {
 
     setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
-            // Don't trigger shortcuts when typing in inputs
+            
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                 return;
             }
             
             switch (e.key) {
-                case ' ': // Space - alternar reprodução
+                case ' ': 
                     e.preventDefault();
                     document.getElementById('playBtn').click();
                     break;
                     
-                case 'ArrowLeft': // Left arrow - previous date
+                case 'ArrowLeft': 
                     e.preventDefault();
                     document.getElementById('prevDate').click();
                     break;
                     
-                case 'ArrowRight': // Right arrow - next date
+                case 'ArrowRight': 
                     e.preventDefault();
                     document.getElementById('nextDate').click();
                     break;
                     
                 case 'r':
-                case 'R': // R - Risk mode
+                case 'R': 
                     document.querySelector('[data-mode="risk"]').click();
                     break;
                     
                 case 'p':
                 case 't':
-                case 'T': // T - Temperature mode
+                case 'T': 
                     document.querySelector('[data-mode="temperature"]').click();
                     break;
                     
                 case 'e':
-                case 'E': // E - Export
+                case 'E': 
                     document.getElementById('exportBtn').click();
                     break;
                     
-                case 'Escape': // Escape - fechar painéis
+                case 'Escape': 
                     this.closeDataPanel();
                     if (this.isMobile && this.controlPanelOpen) {
                         this.toggleMobileMenu();
@@ -358,7 +366,7 @@ class UIController {
     }
 
     showContextMenu(options, event) {
-        // Simple context menu implementation
+        
         const menu = document.createElement('div');
         menu.className = 'context-menu';
         menu.style.cssText = `
@@ -399,13 +407,11 @@ class UIController {
         });
         
         document.body.appendChild(menu);
-        
-        // Position menu
+
         const rect = event.target.getBoundingClientRect();
         menu.style.left = rect.left + 'px';
         menu.style.top = (rect.bottom + 5) + 'px';
-        
-        // Remove menu when clicking outside
+
         setTimeout(() => {
             document.addEventListener('click', function closeMenu() {
                 if (document.body.contains(menu)) {
@@ -455,13 +461,11 @@ class UIController {
         `;
         
         modal.appendChild(modalContent);
-        
-        // Close button functionality
+
         modalContent.querySelector('.modal-close').addEventListener('click', () => {
             document.body.removeChild(modal);
         });
-        
-        // Close on outside click
+
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 document.body.removeChild(modal);
@@ -473,8 +477,7 @@ class UIController {
 
     showModal(modal) {
         document.body.appendChild(modal);
-        
-        // Focus management
+
         const closeBtn = modal.querySelector('.modal-close');
         if (closeBtn) {
             closeBtn.focus();
@@ -500,15 +503,13 @@ class UIController {
         notification.textContent = message;
         
         document.body.appendChild(notification);
-        
-        // Auto remove
+
         setTimeout(() => {
             if (document.body.contains(notification)) {
                 document.body.removeChild(notification);
             }
         }, duration);
-        
-        // Click to dismiss
+
         notification.addEventListener('click', () => {
             if (document.body.contains(notification)) {
                 document.body.removeChild(notification);

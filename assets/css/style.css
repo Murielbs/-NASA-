@@ -1,4 +1,4 @@
-/* Reset e Estilos Base */
+
 * {
     margin: 0;
     padding: 0;
@@ -14,7 +14,7 @@ body {
     overflow: hidden;
 }
 
-/* Container da Aplicação */
+
 .app-container {
     display: grid;
     grid-template-areas: 
@@ -26,7 +26,7 @@ body {
     height: 100vh;
 }
 
-/* Cabeçalho */
+
 .header {
     grid-area: header;
     background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
@@ -93,7 +93,7 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* Painel de Controle */
+
 .control-panel {
     grid-area: sidebar;
     background: white;
@@ -119,7 +119,7 @@ body {
     gap: 8px;
 }
 
-/* Controles de Data */
+
 .date-controls {
     display: flex;
     gap: 8px;
@@ -184,7 +184,7 @@ body {
     box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
 }
 
-/* Painel de Análise */
+
 .analysis-panel {
     display: flex;
     flex-direction: column;
@@ -219,7 +219,7 @@ body {
     font-size: 16px;
 }
 
-/* Controles de Camadas */
+
 .layer-controls {
     display: flex;
     flex-direction: column;
@@ -250,7 +250,7 @@ body {
     cursor: pointer;
 }
 
-/* Botões de Ferramentas */
+
 .tool-buttons {
     display: flex;
     flex-direction: column;
@@ -281,7 +281,7 @@ body {
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
-/* Conteúdo Principal */
+
 .main-content {
     grid-area: main;
     position: relative;
@@ -301,7 +301,7 @@ body {
     min-height: 500px;
 }
 
-/* Map Overlay - regra removida (duplicada) */
+
 
 .map-overlay {
     position: absolute;
@@ -321,7 +321,7 @@ body {
     backdrop-filter: blur(10px);
 }
 
-/* Painel de Dados */
+
 .data-panel {
     position: absolute;
     bottom: 0;
@@ -385,7 +385,7 @@ body {
     overflow-y: auto;
 }
 
-/* Barra de Status */
+
 .status-bar {
     grid-area: status;
     background: linear-gradient(90deg, #34495e, #2c3e50);
@@ -403,7 +403,7 @@ body {
     font-weight: 500;
 }
 
-/* Overlay de Carregamento */
+
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -442,7 +442,7 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Customizações do Leaflet */
+
 .leaflet-container {
     background: #f8f9fa;
     width: 100% !important;
@@ -506,7 +506,7 @@ body {
     border-color: #3498db;
 }
 
-/* Design Responsivo */
+
 @media (max-width: 768px) {
     .app-container {
         grid-template-areas: 
@@ -547,7 +547,7 @@ body {
     }
 }
 
-/* Estilos de Marcadores Personalizados */
+
 .risk-marker {
     background: radial-gradient(circle, rgba(255, 0, 0, 0.8) 0%, rgba(255, 0, 0, 0.2) 100%);
     border: 2px solid #ff0000;

@@ -1,24 +1,12 @@
-/**
- * Controlado            // Mostrar estado de carregamento
-            this.showLoadingScreen();
 
-            // Inicializar componentes em ordem
-            await this.initializeComponents();
-
-            // Configurar ouvintes de eventos globais
-            this.setupGlobalEventListeners();
-
-            // Configurar tratamento de erros
-            this.setupErrorHandling();
-
-            // Ocultar tela de carregamento
-            setTimeout(() => this.hideLoadingScreen(), 1000);
-
-            // Marcar como inicializadoplicação
- * Inicializa e coordena todos os componentes da Plataforma Interativa de Mapas NASA
- */
 class NASAMapApp {
     constructor() {
+        // Verificar se já existe uma instância
+        if (window.nasaMapApp && window.nasaMapApp.initialized) {
+            console.log('Aplicação já inicializada, pulando...');
+            return window.nasaMapApp;
+        }
+
         this.initialized = false;
         this.version = '1.0.0';
         this.components = {};
@@ -27,17 +15,19 @@ class NASAMapApp {
     }
 
     async init() {
+        if (this.initialized) {
+            console.log('Init já executado, pulando...');
+            return;
+        }
+
         try {
             console.log('🚀 GeoAnalytica Brasil v' + this.version);
             console.log('Inicializando aplicação...');
 
-        
             this.showLoadingScreen();
 
-          
             await this.initializeComponents();
 
-       
             this.setupGlobalEvents();
 
             this.setupErrorHandling();
@@ -68,10 +58,8 @@ class NASAMapApp {
         this.components.mapController = new MapController();
         window.mapController = this.components.mapController;
 
-      
         await this.linkComponents();
-        
-        
+
         setTimeout(() => {
             if (this.components.mapController && this.components.mapController.map) {
                 this.components.mapController.map.invalidateSize();
@@ -98,24 +86,20 @@ class NASAMapApp {
             this.handleDataUpdate(event.detail);
         });
 
-       
         window.addEventListener('mapClicked', (event) => {
             this.handleMapClick(event.detail);
         });
 
-       
         window.addEventListener('error', (event) => {
             console.error('Global error:', event.error);
             this.handleGlobalError(event.error);
         });
 
-        
         window.addEventListener('unhandledrejection', (event) => {
             console.error('Unhandled promise rejection:', event.reason);
             this.handleGlobalError(event.reason);
         });
 
-        
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 this.handleAppHidden();
@@ -124,7 +108,6 @@ class NASAMapApp {
             }
         });
 
-       
         window.addEventListener('online', () => {
             this.handleOnlineStatus(true);
         });
@@ -139,8 +122,7 @@ class NASAMapApp {
         const originalConsoleError = console.error;
         console.error = (...args) => {
             originalConsoleError.apply(console, args);
-            
-           
+
             this.logError(args.join(' '));
         };
     }
@@ -148,14 +130,12 @@ class NASAMapApp {
     handleDataUpdate(detail) {
       
         const { dataset, date } = detail;
-        
-       
+
         if (this.components.uiController) {
             const status = `Loaded ${dataset.metadata.totalPoints} points for ${date.toLocaleDateString()}`;
             document.getElementById('statusText').textContent = status;
         }
 
-        
         if (this.components.mapController) {
             this.components.mapController.updateVisualization();
         }
@@ -163,8 +143,7 @@ class NASAMapApp {
 
     handleMapClick(detail) {
         console.log('Mapa clicado em:', detail.coordinates);
-        
-       
+
         if (this.components.dataManager) {
             const nearbyData = this.components.dataManager.getDataForCoordinates(
                 detail.coordinates.lat,
@@ -180,8 +159,7 @@ class NASAMapApp {
 
     handleGlobalError(error) {
         console.error('Handling global error:', error);
-        
-       
+
         if (this.components.uiController) {
             this.components.uiController.showNotification(
                 'An error occurred. Please try refreshing the page.',
@@ -189,8 +167,7 @@ class NASAMapApp {
                 5000
             );
         }
-        
-       
+
         this.logError(error.toString());
     }
 
@@ -206,8 +183,7 @@ class NASAMapApp {
     handleAppVisible() {
         
         console.log('App visível - retomando atividade normal');
-        
-        
+
         if (this.components.mapController) {
             setTimeout(() => {
                 this.components.mapController.map.invalidateSize();
@@ -226,8 +202,7 @@ class NASAMapApp {
                 2000
             );
         }
-        
-        
+
         document.getElementById('statusText').textContent = 
             isOnline ? 'Ready' : 'Offline mode';
     }
@@ -236,8 +211,7 @@ class NASAMapApp {
         const loadingOverlay = document.getElementById('loadingOverlay');
         if (loadingOverlay) {
             loadingOverlay.classList.add('show');
-            
-           
+
             const loadingText = loadingOverlay.querySelector('p');
             if (loadingText) {
                 loadingText.textContent = 'Initializing NASA Map Platform...';
@@ -307,13 +281,11 @@ class NASAMapApp {
             url: window.location.href,
             version: this.version
         };
-        
-        
+
         try {
             const existingLogs = JSON.parse(localStorage.getItem('nasaMapErrors') || '[]');
             existingLogs.push(errorLog);
-            
-            
+
             if (existingLogs.length > 10) {
                 existingLogs.shift();
             }
@@ -324,7 +296,6 @@ class NASAMapApp {
         }
     }
 
-    
     getVersion() {
         return this.version;
     }
@@ -365,7 +336,6 @@ class NASAMapApp {
         URL.revokeObjectURL(url);
     }
 
-   
     enableDebugMode() {
         window.nasaMapDebug = {
             app: this,
@@ -408,15 +378,8 @@ class NASAMapApp {
     }
 }
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    window.nasaMapApp = new NASAMapApp();
-});
-
-
 window.addEventListener('error', (event) => {
     console.error('Uncaught error:', event.error);
 });
-
 
 window.NASAMapApp = NASAMapApp;
