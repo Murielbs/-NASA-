@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta nam        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <div class="map-container">
+                <div id="map" class="map"></div>
+                
+                <!-- Informações Sobrepostas do Mapa -->ort" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Análise Geoespacial - NASA Brasil</title>
+    
+    <!-- CSS do Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- CSS Customizado -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1 class="app-title">🛰️ GeoAnalytica Brasil</h1>
+                    <span class="app-subtitle">Plataforma de Monitoramento Ambiental</span>
+                </div>
+                
+                <div class="header-controls">
+                    <div class="view-mode-selector">
+                        <button class="mode-btn active" data-mode="risk">Risco</button>
+                        <button class="mode-btn" data-mode="temperature">Temperatura</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Painel de Controle -->
+        <aside class="control-panel">
+            <div class="control-section">
+                <h3>🕒 Controle Temporal</h3>
+                <div class="date-controls">
+                    <button class="date-nav-btn" id="prevDate" title="Data Anterior">←</button>
+                    <input type="date" id="dateInput" class="date-input">
+                    <button class="date-nav-btn" id="nextDate" title="Próxima Data">→</button>
+                </div>
+                <button class="play-btn" id="playBtn">▶ Reproduzir</button>
+            </div>
+
+            <div class="control-section">
+                <h3>📊 Análise Atual</h3>
+                <div class="analysis-panel">
+                    <div class="metric">
+                        <label>Valor Principal</label>
+                        <div class="metric-value" id="primaryValue">--</div>
+                    </div>
+                    <div class="metric">
+                        <label>Nível de Intensidade</label>
+                        <div class="metric-value" id="intensityLevel">--%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🗺️ Camadas do Mapa</h3>
+                <div class="layer-controls">
+                    <label class="layer-toggle">
+                        <input type="checkbox" id="dataLayer" checked>
+                        <span>Dados Principais</span>
+                    </label>
+                    <label class="layer-toggle">
+                        <input type="checkbox" id="heatmapLayer">
+                        <span>Mapa de Calor</span>
+                    </label>
+                    <label class="layer-toggle">
+                        <input type="checkbox" id="markerLayer" checked>
+                        <span>Marcadores</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🛠️ Ferramentas</h3>
+                <div class="tool-buttons">
+                    <button class="tool-btn" id="exportBtn">📁 Exportar</button>
+                    <button class="tool-btn" id="analyzeBtn">🔍 Analisar</button>
+                    <button class="tool-btn" id="infoBtn">ℹ️ Ajuda</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="map-container">
+                <div id="map"></div>
+                
+                <!-- Map Overlay Info -->
+                <div class="map-overlay">
+                    <div class="coordinates-display" id="coordinatesDisplay">
+                        Lat: --, Lon: --
+                    </div>
+                </div>
+            </div>
+
+            <!-- Painel de Dados -->
+            <div class="data-panel" id="dataPanel">
+                <div class="data-panel-header">
+                    <h3>📈 Resultados da Análise</h3>
+                    <button class="close-btn" id="closePanelBtn">×</button>
+                </div>
+                <div class="data-panel-content">
+                    <p>Clique no mapa para visualizar dados detalhados de análise.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Barra de Status -->
+        <footer class="status-bar">
+            <div class="status-info">
+                <span id="statusText">Pronto</span>
+            </div>
+            <div class="data-info">
+                <span id="dataStatus">Nenhum dado carregado</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Overlay de Carregamento -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Carregando dados...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/js/mapController.js"></script>
+    <script src="assets/js/dataManager.js"></script>
+    <script src="assets/js/uiController.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
