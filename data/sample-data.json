@@ -16,44 +16,79 @@
 	{
 		"id": 3,
 		"location": "Flórida, EUA",
-		"coordinates": [-80.1918, 25.7617],
+		"coordinates": [-80.1871, 25.7617],
 		"description": "Ocorrência de tubarão na Flórida",
 		"sharkName": "Tubarão Martelo"
 	},
 	{
 		"id": 4,
 		"location": "Califórnia, EUA",
-		"coordinates": [-118.2437, 34.0522],
+    "coordinates": [-120.1134, 33.5401],
 		"description": "Ocorrência de tubarão na Califórnia",
 		"sharkName": "Tubarão Branco"
 	},
 	{
 		"id": 5,
 		"location": "Carolina do Norte, EUA",
-		"coordinates": [-77.0369, 35.7596],
+		"coordinates": [-74.7954, 35.6035],
 		"description": "Ocorrência de tubarão na Carolina do Norte",
 		"sharkName": "Tubarão Galha-Preta"
 	},
 	{
 		"id": 6,
 		"location": "Cidade do Cabo, África do Sul",
-		"coordinates": [18.4241, -33.9249],
+		"coordinates": [18.4562, -33.9106],
 		"description": "Ocorrência de tubarão na Cidade do Cabo",
 		"sharkName": "Tubarão Branco"
 	},
 	{
 		"id": 7,
 		"location": "Dakar, Senegal",
-		"coordinates": [-17.4677, 14.7167],
+		"coordinates": [-17.5036, 14.7100],
 		"description": "Ocorrência de tubarão em Dakar",
 		"sharkName": "Tubarão Cinzento"
 	},
 	{
 		"id": 8,
 		"location": "Luanda, Angola",
-		"coordinates": [13.2344, -8.8390],
+		"coordinates": [13.1999, -8.8294],
 		"description": "Ocorrência de tubarão em Luanda",
 		"sharkName": "Tubarão Azul"
+	},
+	{
+		"id": 9,
+		"location": "Recife, Brasil",
+		"coordinates": [-34.8839, -8.1035],
+		"description": "Ocorrência de tubarão na costa de Recife",
+		"sharkName": "Tubarão Cabeça-Chata"
+	},
+	{
+		"id": 10,
+		"location": "Recife, Brasil",
+		"coordinates": [-34.8840, -8.1036],
+		"description": "Ocorrência de tubarão na costa de Recife",
+		"sharkName": "Tubarão Cabeça-Chata"
+	},
+	{
+		"id": 11,
+		"location": "Recife, Brasil",
+		"coordinates": [-34.8844, -8.1032],
+		"description": "Ocorrência de tubarão na costa de Recife",
+		"sharkName": "Tubarão Cabeça-Chata"
+	},
+	{
+		"id": 12,
+		"location": "Recife, Brasil",
+		"coordinates": [-34.8841, -8.1035],
+		"description": "Ocorrência de tubarão na costa de Recife",
+		"sharkName": "Tubarão Cabeça-Chata"
+	},
+	{
+		"id": 13,
+		"location": "Recife, Brasil",
+		"coordinates": [-34.8840, -8.1030],
+		"description": "Ocorrência de tubarão na costa de Recife",
+		"sharkName": "Tubarão Cabeça-Chata"
 	}
 ]
 
