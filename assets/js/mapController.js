@@ -59,7 +59,7 @@ class MapController {
 
         // Adicionar camada de azulejos clara
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | GeoAnalytica Brasil',
+            attribution: '', // Remove atribuição
             subdomains: 'abc',
             maxZoom: 18,
             noWrap: true // Evita repetição do mapa
@@ -69,6 +69,10 @@ class MapController {
         L.control.scale({
             position: 'bottomleft'
         }).addTo(this.map);
+
+        // Remove o controle de atribuição do Leaflet
+        this.map.attributionControl.setPrefix("");
+        this.map.attributionControl.setPosition('bottomright');
 
         this.setupMapEvents();
         
