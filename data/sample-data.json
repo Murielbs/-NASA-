@@ -1,1 +1,59 @@
+[
+	{
+		"id": 1,
+		"location": "Recife, Brasil",
+		"coordinates": [ -34.8809, -8.1044],
+		"description": "Ocorrência de tubarão na costa do Recife",
+		"sharkName": "Tubarão Cabeça-Chata"
+	},
+	{
+		"id": 2,
+		"location": "Recife, Brasil",
+		"coordinates": [-34.8600, -8.0500],
+		"description": "Segundo ponto de ocorrência na costa do Recife",
+		"sharkName": "Tubarão Tigre"
+	},
+	{
+		"id": 3,
+		"location": "Flórida, EUA",
+		"coordinates": [-80.1918, 25.7617],
+		"description": "Ocorrência de tubarão na Flórida",
+		"sharkName": "Tubarão Martelo"
+	},
+	{
+		"id": 4,
+		"location": "Califórnia, EUA",
+		"coordinates": [-118.2437, 34.0522],
+		"description": "Ocorrência de tubarão na Califórnia",
+		"sharkName": "Tubarão Branco"
+	},
+	{
+		"id": 5,
+		"location": "Carolina do Norte, EUA",
+		"coordinates": [-77.0369, 35.7596],
+		"description": "Ocorrência de tubarão na Carolina do Norte",
+		"sharkName": "Tubarão Galha-Preta"
+	},
+	{
+		"id": 6,
+		"location": "Cidade do Cabo, África do Sul",
+		"coordinates": [18.4241, -33.9249],
+		"description": "Ocorrência de tubarão na Cidade do Cabo",
+		"sharkName": "Tubarão Branco"
+	},
+	{
+		"id": 7,
+		"location": "Dakar, Senegal",
+		"coordinates": [-17.4677, 14.7167],
+		"description": "Ocorrência de tubarão em Dakar",
+		"sharkName": "Tubarão Cinzento"
+	},
+	{
+		"id": 8,
+		"location": "Luanda, Angola",
+		"coordinates": [13.2344, -8.8390],
+		"description": "Ocorrência de tubarão em Luanda",
+		"sharkName": "Tubarão Azul"
+	}
+]
 

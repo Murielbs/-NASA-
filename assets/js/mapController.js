@@ -284,18 +284,51 @@ class MapController {
     }
 
     updateVisualization() {
-        // Clear existing markers
         this.clearMarkers();
-        
-        // Não gerar dados automáticos - aguardar dados reais da NASA
-        // this.generateSampleData(); // Comentado para não mostrar dados falsos
-        
-        // Update status
+
+        if (window.dataManager && window.dataManager.currentDataset && window.dataManager.currentDataset.points) {
+            const sharkPoints = window.dataManager.currentDataset.points;
+            
+            sharkPoints.forEach(point => {
+                if (point.coordinates && Array.isArray(point.coordinates)) {
+                    const lat = point.coordinates[1];
+                    const lng = point.coordinates[0];
+                    const marker = L.marker([lat, lng], {
+                        icon: L.divIcon({
+                            className: 'custom-marker shark-marker',
+                            html: '<div style="background:#c00;border-radius:50%;width:18px;height:18px;border:2px solid #fff;box-shadow:0 0 5px #000;"></div>',
+                            iconSize: [22, 22],
+                            iconAnchor: [11, 11]
+                        })
+                    }).addTo(this.map);
+                    
+                    marker.on('click', () => {
+                        this.showSharkDataPanel(point);
+                    });
+                    
+                    this.markers.push(marker);
+                }
+            });
+        }
+
         const modeNames = {
             risk: 'Análise de Risco',
             temperature: 'Análise de Temperatura'
         };
         document.getElementById('statusText').textContent = `Modo: ${modeNames[this.currentMode]}`;
+    }        showSharkDataPanel(point) {
+            const dataPanel = document.getElementById('dataPanel');
+            const content = document.querySelector('.data-panel-content');
+                content.innerHTML = `
+                    <div class="analysis-details">
+                        <h4>Ocorrência de Tubarão</h4>
+                        <p><strong>Localização:</strong> ${point.location}</p>
+                        <p><strong>Coordenadas:</strong> ${point.coordinates[1].toFixed(4)}, ${point.coordinates[0].toFixed(4)}</p>
+                        <p><strong>Descrição:</strong> ${point.description}</p>
+                        <p><strong>Nome do Tubarão:</strong> ${point.sharkName || 'Não informado'}</p>
+                    </div>
+                `;
+            dataPanel.classList.add('open');
     }
 
     generateSampleData() {

@@ -16,9 +16,10 @@ class DataManager {
 
     init() {
         this.setupDateControls();
-        
         this.updateDateDisplay();
-        this.clearMetrics(); 
+        this.clearMetrics();
+        // Carrega os dados iniciais ao carregar a página
+        this.loadDataForDate(this.currentDate);
     }
 
     clearMetrics() {
@@ -130,7 +131,7 @@ class DataManager {
         }
     }
 
-    loadDataForDate(date) {
+    async loadDataForDate(date) {
         const dateKey = this.formatDateForInput(date);
 
         if (this.dataCache.has(dateKey)) {
@@ -140,18 +141,41 @@ class DataManager {
         }
 
         document.getElementById('loadingOverlay').classList.add('show');
-        document.getElementById('statusText').textContent = 'Carregando dados...';
+        document.getElementById('statusText').textContent = 'Carregando dados de tubarões...';
 
-        setTimeout(() => {
-            const dataset = this.generateDataForDate(date);
+        try {
+            const response = await fetch('data/sample-data.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const sharkData = await response.json();
+            
+            // Envolve os dados do tubarão em uma estrutura de 'dataset' esperada
+            const dataset = {
+                points: sharkData,
+                statistics: {
+                    avgRisk: 0,
+                    avgProbability: 0,
+                    hotspotCount: sharkData.length
+                },
+                metadata: {
+                    totalPoints: sharkData.length
+                }
+            };
+
             this.dataCache.set(dateKey, dataset);
             this.currentDataset = dataset;
             
             document.getElementById('loadingOverlay').classList.remove('show');
-            document.getElementById('statusText').textContent = 'Dados carregados';
-            
+            document.getElementById('statusText').textContent = 'Dados de tubarões carregados';
             this.notifyDataLoaded();
-        }, 500 + Math.random() * 1000); 
+        } catch (err) {
+            console.error('Falha ao carregar dados de tubarões:', err);
+            document.getElementById('loadingOverlay').classList.remove('show');
+            document.getElementById('statusText').textContent = 'Erro ao carregar dados';
+            this.currentDataset = { points: [], statistics: {}, metadata: {} };
+            this.notifyDataLoaded();
+        }
     }
 
     generateDataForDate(date) {
